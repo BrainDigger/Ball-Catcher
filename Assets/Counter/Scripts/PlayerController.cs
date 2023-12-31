@@ -12,8 +12,7 @@ public class PlayerController : MonoBehaviour
 	public int lives;
 	public TextMeshProUGUI scoreText;
 	public TextMeshProUGUI livesText;
-	public TextMeshProUGUI statusText;
-	public Button restartButton;
+	public GameObject gameOverScreen;
 	public AudioClip catchSound;
 	public AudioClip missSound;
 	public GameObject confettiPrefab;
@@ -30,7 +29,8 @@ public class PlayerController : MonoBehaviour
 		playerAudio = GetComponent<AudioSource>();
 		// Reset score
 		score = 0;
-		Invoke("ClearStatusText", 1.5f);
+		// Hide game over screen
+		gameOverScreen.gameObject.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -73,11 +73,6 @@ public class PlayerController : MonoBehaviour
 
 	}
 
-	private void ClearStatusText()
-	{
-		statusText.SetText("");
-	}
-
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag("CatchObject") && !gameOver)
@@ -97,8 +92,7 @@ public class PlayerController : MonoBehaviour
 		if (lives <= 0)
 		{
 			gameOver = true;
-			statusText.SetText("GAME OVER");
-			restartButton.gameObject.SetActive(true);
+			gameOverScreen.gameObject.SetActive(true);
 		}
 	}
 
@@ -112,4 +106,11 @@ public class PlayerController : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
+
+	// Exit to main menu
+	public void MainMenu()
+	{
+		SceneManager.LoadScene(0);
+	}
+
 }
