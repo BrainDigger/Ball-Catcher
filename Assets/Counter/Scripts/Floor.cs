@@ -6,12 +6,12 @@ public class Floor : MonoBehaviour
 {
 	public GameObject explosionPrefab;
 
-	private PlayerController playerControllerScript;
+	private GameManager gameManager;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+		gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 	}
 
 	private void OnCollisionEnter(Collision other)
@@ -20,9 +20,9 @@ public class Floor : MonoBehaviour
 		{
 			Instantiate(explosionPrefab, other.transform.position, explosionPrefab.transform.rotation);
 			Destroy(other.gameObject);
-			if (!playerControllerScript.gameOver)
+			if (gameManager.isGameActive)
 			{
-				playerControllerScript.ReduceLife();
+				gameManager.LoseLife();
 			}
 		}
 	}

@@ -8,42 +8,22 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-	public bool gameOver;
-	public int lives;
-	public TextMeshProUGUI scoreText;
-	public TextMeshProUGUI livesText;
-	public GameObject gameOverScreen;
-	public AudioClip catchSound;
-	public AudioClip missSound;
 	public GameObject confettiPrefab;
 
-	private int score = 0;
+	private GameManager gameManager;
 	private float horizontalInput;
 	private float speed = 20.0f;
 	private float zRange = 16;
-	private AudioSource playerAudio;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		playerAudio = GetComponent<AudioSource>();
-		// Reset score
-		score = 0;
-		// Hide game over screen
-		gameOverScreen.gameObject.SetActive(false);
+		gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		// Show the correct number of lives left
-		string stringLives = "";
-		for ( int i = 0 ; i < lives ; i++ )
-		{
-			stringLives += "♥";
-		}
-		livesText.SetText(stringLives);
-
 		// Check for left and right bounds
 		if (transform.position.z < -zRange)
 		{
@@ -56,7 +36,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		// Allow player movement left to right while game isn't over
-		if (!gameOver)
+		if (gameManager.isGameActive)
 		{
 			// Get player input
 			horizontalInput = Input.GetAxis("Horizontal");
@@ -75,42 +55,17 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.CompareTag("CatchObject") && !gameOver)
+		if (other.gameObject.CompareTag("CatchObject") && gameManager.isGameActive)
 		{
-			score += 1;
-			scoreText.SetText("SCORE\n" + score);
-			playerAudio.PlayOneShot(catchSound, 0.3f);
+			gameManager.AddScore();
 			Instantiate(confettiPrefab, other.transform.position, confettiPrefab.transform.rotation);
 			Destroy(other.gameObject);
-		}
-	}
-
-	public void ReduceLife()
-	{
-		lives--;
-		playerAudio.PlayOneShot(missSound, 0.3f);
-		if (lives <= 0)
-		{
-			gameOver = true;
-			gameOverScreen.gameObject.SetActive(true);
 		}
 	}
 
 	public void MultiplySpeed(float amount)
 	{
 		speed *= amount;
-	}
-
-	// Restart game by reloading the scene
-	public void RestartGame()
-	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
-
-	// Exit to main menu
-	public void MainMenu()
-	{
-		SceneManager.LoadScene(0);
 	}
 
 }
