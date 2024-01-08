@@ -45,7 +45,8 @@ public class DataManager : MonoBehaviour
 		data.ScoreBoard = ScoreBoard;
 
 		string json = JsonUtility.ToJson(data);
-	  
+
+		Debug.Log("Saving JSON:\n" + json);
 		File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
 	}
 
@@ -58,6 +59,24 @@ public class DataManager : MonoBehaviour
 			SaveData data = JsonUtility.FromJson<SaveData>(json);
 
 			ScoreBoard = data.ScoreBoard;
+		}
+	}
+
+	public void AddScoreToBoard(string playerName, int playerScore)
+	{
+		for (int i = 0 ; i < ScoreBoard.Length ; i++)
+		{
+			if (playerScore > ScoreBoard[i].score)
+			{
+				for (int j = ScoreBoard.Length - 1 ; j > i ; j--)
+				{
+					ScoreBoard[j].name = ScoreBoard[j-1].name;
+					ScoreBoard[j].score = ScoreBoard[j-1].score;
+				}
+				ScoreBoard[i].name = playerName;
+				ScoreBoard[i].score = playerScore;
+				return;
+			}
 		}
 	}
 }

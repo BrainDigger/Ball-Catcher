@@ -21,6 +21,10 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
+		if (!DataManager.Instance)
+		{
+			MainMenu();
+		}
 		isGameActive = true;
 		score = 0;
 		lives = 3;
@@ -49,13 +53,15 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void AddScore()
+	// Add a point to the score
+	public void AddScore(int pointsToAdd = 1)
 	{
-		score++;
+		score += pointsToAdd;
 		gameUI.SetScore(score);
 		gameAudio.PlayOneShot(catchSound, 0.3f);
 	}
 
+	// Reduce player life and end the game if it reaches 0
 	public void LoseLife()
 	{
 		lives--;
@@ -64,8 +70,17 @@ public class GameManager : MonoBehaviour
 		if (lives <= 0)
 		{
 			isGameActive = false;
-			gameUI.ShowGameOver();
+			gameUI.ShowGameOver(score > DataManager.Instance.ScoreBoard[DataManager.Instance.ScoreBoard.Length - 1].score);
 		}
+	}
+
+	// Saves player name and score to the scoreboard
+	public void SaveHighScore(string playerName)
+	{
+		Debug.Log("Saving score:\nName: " + playerName + "\nScore: " + score);
+		DataManager.Instance.AddScoreToBoard(playerName, score);
+		DataManager.Instance.SaveScoreBoard();
+		gameUI.ShowGameOver(false);
 	}
 
 	// Restart game by reloading the scene

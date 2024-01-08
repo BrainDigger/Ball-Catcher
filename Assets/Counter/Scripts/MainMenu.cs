@@ -31,7 +31,7 @@ public class MainMenu : MonoBehaviour
 
 	private void Start()
 	{
-		for (int i = 0; i < 5 ; i++)
+		for (int i = 0; i < DataManager.Instance.ScoreBoard.Length ; i++)
 		{
 			names[i].SetText(DataManager.Instance.ScoreBoard[i].name);
 			scores[i].SetText(DataManager.Instance.ScoreBoard[i].score.ToString());
