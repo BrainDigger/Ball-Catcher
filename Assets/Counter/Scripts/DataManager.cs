@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+	[System.Serializable]
 	public class HighScore
 	{
 		public string name;
@@ -30,7 +31,7 @@ public class DataManager : MonoBehaviour
 		}
 		Instance = this;
 		DontDestroyOnLoad(gameObject);
-		//LoadScoreBoard();
+		LoadScoreBoard();
 	}
 
 	[System.Serializable]
@@ -46,7 +47,6 @@ public class DataManager : MonoBehaviour
 
 		string json = JsonUtility.ToJson(data);
 
-		Debug.Log("Saving JSON:\n" + json);
 		File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
 	}
 

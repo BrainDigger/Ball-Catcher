@@ -77,7 +77,6 @@ public class GameManager : MonoBehaviour
 	// Saves player name and score to the scoreboard
 	public void SaveHighScore(string playerName)
 	{
-		Debug.Log("Saving score:\nName: " + playerName + "\nScore: " + score);
 		DataManager.Instance.AddScoreToBoard(playerName, score);
 		DataManager.Instance.SaveScoreBoard();
 		gameUI.ShowGameOver(false);
