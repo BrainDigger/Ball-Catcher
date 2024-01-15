@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
 #if UNITY_EDITOR
 		EditorApplication.ExitPlaymode();
 #else
-		Application.Quit()
+		Application.Quit();
 #endif
 	}
 
@@ -36,6 +36,9 @@ public class MainMenu : MonoBehaviour
 			names[i].SetText(DataManager.Instance.ScoreBoard[i].name);
 			scores[i].SetText(DataManager.Instance.ScoreBoard[i].score.ToString());
 		}
+#if UNITY_WEBGL
+		GameObject.Find("ExitButtonContainer").SetActive(false);
+#endif
 	}
 
 }
