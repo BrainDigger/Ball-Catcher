@@ -36,7 +36,8 @@ public class MainMenu : MonoBehaviour
 			names[i].SetText(DataManager.Instance.ScoreBoard[i].name);
 			scores[i].SetText(DataManager.Instance.ScoreBoard[i].score.ToString());
 		}
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
+		Debug.Log("Removing exit button for webGL");
 		GameObject.Find("ExitButtonContainer").SetActive(false);
 #endif
 	}

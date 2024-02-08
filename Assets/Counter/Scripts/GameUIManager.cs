@@ -16,6 +16,7 @@ public class GameUIManager : MonoBehaviour
 	private GameObject highScoreMenu;
 	private TextMeshProUGUI gameOverText;
 	private TextMeshProUGUI scoreText;
+	private TextMeshProUGUI highscoreText;
 	private TextMeshProUGUI livesText;
 
 	// Start is called before the first frame update
@@ -28,21 +29,23 @@ public class GameUIManager : MonoBehaviour
 		highScoreMenu = gameOverScreen.transform.Find("HighScoreMenuContainer").gameObject;
 		gameOverText = gameOverScreen.transform.Find("TitleText").GetComponent<TextMeshProUGUI>();
 		scoreText = GameObject.Find("GameUIContainer/Score Text").GetComponent<TextMeshProUGUI>();
+		highscoreText = GameObject.Find("GameUIContainer/High Score Text").GetComponent<TextMeshProUGUI>();
 		livesText = GameObject.Find("GameUIContainer/Lives Text").GetComponent<TextMeshProUGUI>();
 
 		// Hide game over screen
 		gameOverScreen.gameObject.SetActive(false);
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-		
+		// Show high score
+		SetHighScore(DataManager.Instance.ScoreBoard[0].score);
 	}
 
 	public void SetScore(int score)
 	{
 		scoreText.SetText("SCORE\n" + score);
+	}
+
+	public void SetHighScore(int score)
+	{
+		highscoreText.SetText("HIGH SCORE\n" + score);
 	}
 
 	public void SetLives(int lives)

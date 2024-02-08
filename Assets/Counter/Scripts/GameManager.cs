@@ -58,6 +58,10 @@ public class GameManager : MonoBehaviour
 	{
 		score += pointsToAdd;
 		gameUI.SetScore(score);
+		if ( score > DataManager.Instance.ScoreBoard[0].score)
+		{
+			gameUI.SetHighScore(score);
+		}
 		gameAudio.PlayOneShot(catchSound, 0.3f);
 	}
 
